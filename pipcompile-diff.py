@@ -11,7 +11,7 @@ def requirements_set(filename):
         for line in old_reqs:
             if is_pypi_req(line):
                 req = line.split('==')[0]
-                requirements.add(req)
+                requirements.add(req.lower())
 
     return requirements
 
@@ -23,8 +23,8 @@ def compare_reqs(old, new):
     new_not_old = new_reqs - old_reqs
 
     return {
-        'old_not_new': old_not_new,
-        'new_not_old': new_not_old,
+        'old_not_new': sorted(list(old_not_new)),
+        'new_not_old': sorted(list(new_not_old)),
     }
 
 if __name__ == '__main__':
