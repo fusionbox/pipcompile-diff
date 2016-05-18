@@ -2,6 +2,10 @@
 
 import argparse
 
+class bcolors:
+    HEADER = '\033[95m'
+    ENDC = '\033[0m'
+
 def is_pypi_req(line):
     return '==' in line
 
@@ -36,12 +40,12 @@ if __name__ == '__main__':
 
     compared_reqs = compare_reqs(args.old_file, args.new_file)
 
-    print("Present in old but not new:")
+    print(bcolors.HEADER + "Present in old but not new:" + bcolors.ENDC)
     for x in compared_reqs['old_not_new']:
         print(x)
 
     print("\n")
 
-    print("Present in new but not old:")
+    print(bcolors.HEADER + "Present in new but not old:" + bcolors.ENDC)
     for x in compared_reqs['new_not_old']:
         print(x)
