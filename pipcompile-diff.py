@@ -6,18 +6,27 @@ class bcolors:
     HEADER = '\033[95m'
     ENDC = '\033[0m'
 
-def is_pypi_req(line):
-    return '==' in line
+
+def version_restriction(line):
+    restrictions = ['==', '>=', '<=']
+    for r in restrictions:
+        if r in line:
+            return r
+
+    return None
+
 
 def requirements_set(filename):
     requirements = set()
     with open(filename) as old_reqs:
         for line in old_reqs:
-            if is_pypi_req(line):
-                req = line.split('==')[0]
+            restriction = version_restriction(line)
+            if restriction:
+                req = line.split(restriction)[0]
                 requirements.add(req.lower())
 
     return requirements
+
 
 def compare_reqs(old, new):
     old_reqs = requirements_set(old)
@@ -30,6 +39,7 @@ def compare_reqs(old, new):
         'old_not_new': sorted(list(old_not_new)),
         'new_not_old': sorted(list(new_not_old)),
     }
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
